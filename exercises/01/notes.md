@@ -1,0 +1,3 @@
+- Audio beacons to track phone (?)
+- Sharing of health data with third parties
+- Identifying ppl in anonymized data sets (ref 61)
