@@ -123,57 +123,57 @@
 
 \subsection{Device tracking with ultrasonic beacons}
 
-Ultrasonic beacons --- that is audio signals with frequencies above those which
-can be heard by humans --- provide a way to track the presence of users'
-devices. To do so, so-called `beacons' emit an ultrasound signal which is then
-recorded by a device's microphone. When a device thus records such a signal it
-knows that it is in proximity to the beacon emitting it, and can use this
-information to e.g. deduce and report the user's approximate
+So-called `ultrasonic beacons' can be used to estimate a user's location,
+respectively detect their presence at a location. To do so, an ultrasonic audio
+signal --- that is an audio signal with a frequency above what can be perceived
+by a human --- is emitted by a hardware device. This signal is then detected by
+any of the user's devices containing a microphone. When a device thus records
+such a signal it knows that it is in proximity to the beacon emitting it, and
+can use this information to e.g. deduce and report the user's approximate
 location.\autocite{newmanHowBlockUltrasonic2016}
 
-On the one hand this can be used to track a device's approximate location,
-similar to how one might be able to do via the signed-in mobile-network cell,
-or by tracking a device's wireless connections. More interestingly this allows
-to e.g. correlate a person having heard an advertisement on TV, and later
-visiting their local supermarket to buy the advertised product. This helps
-answering the question of where and when a user was exposed to an advertisement
-which made them buy the product.\autocite{fribergUltrasonicBeaconsSilent2017}
+In addition to being able to track a device's approximate location, this
+allows to establish causal connections between events. Consider a person having
+heard an advertisement on TV, and later visiting their local supermarket to buy
+the advertised product. If ultrasonic beacons are present in both the ad as
+well as the supermarket, an advertiser can thus establish the relation between
+a user having been exposed to an ad, and having bought the product.
+\autocite{fribergUltrasonicBeaconsSilent2017}
 
 This technique's application however is limited in that it requires an
 application with access to the device's microphone, reporting back to the
 advertiser. It is likely that the permission for an application to access a
 device's microphone is not granted lightly, which might well be one reason why
-this technique has not found wider adoption.
+this technique has not found wider adoption. At the same time this also makes
+it a technique which a user can reasonably defend themselves against, by not
+giving out such permissions lightly.
 
 \subsection{Inferring domestic activities using smart-meter based energy readings}
 
 With the eventual goal of lowering energy consumption of domestic households,
-smart meters have been introduced over the past few years. These provide an
-aggregate energy usage of a household over the course of a day, both to the
-inhabitants of the household as well as to the energy provider.
+smart meters have been introduced over the past few years. These measure the
+aggregate energy usage of a household over the course of a day, providing this
+information both to the inhabitants of the household as well as to the energy
+provider.
 
 Research has shown that it is possible to combine such per-household power
-usage data with statistical models about activities people engage in, to
-determine which activity a household engaged in at a given
+usage data with statistical models about people's activities, to determine
+which activity a household engaged in at a given
 time.\autocite{stankovicMeasuringEnergyIntensity2016}.
 
 This research was based on three components. Firstly there exist models,
-stating which activities a demographic is likely to engage in at a given time.
-Secondly certain activities involve appliances with typical usage patterns.
-Consider a washing machine which will periodically draw a lot of power while
-heating up water, while drawing noticeably less during other parts of the
-washing cycle. Lastly, smart meters provide fine-grained energy usage
-recordings on the time axis.
-
-It was shown that certain activities could be inferred with high certainity
-based on purely existing models, and a household's smart-meter-based power
-recordings.\autocite{stankovicMeasuringEnergyIntensity2016}
+describing at which time which activities tend to take place.  Secondly certain
+activities involve appliances with typical usage patterns.  Consider a washing
+machine which will periodically draw a lot of power while heating up water,
+while consuming noticeably less during other parts of the washing cycle. Lastly,
+smart meters provide fine-grained recordings on the time scale.
 
 The significance of these findings lies in that it is possible to learn about a
-subset of a household's activities purely based on access to their power
-consumption. Such access can be the result of unauthorized access, as smart
-meters are historically insecure\autocite{starrYourSmartElectricity2017}, or of
-data being passed from energy companies to third parties.
+subset of a household's activities with high certainity, based purely on access
+to their power consumption. Such access can be the result of unauthorized
+access, as smart meters are historically
+insecure\autocite{starrYourSmartElectricity2017}, or of data being passed from
+energy companies to third parties.
 
 \subsection{Identifying people in `anonymous' datasets}
 
@@ -183,20 +183,19 @@ address, hospitals release data about procedures unertaken, fitness apps
 release data about activities people engange in, or cab companies release tour
 logs. \autocite{solonDataFingerprintWhy2018}
 
-Research has shown however that, by combining this data with publically
+However research has shown that, by combining this data with publically
 available data such as voter registrations, newspaper articles, phone books or
 public location information, a large percentage of entries in such datasets can
 be identified. As an example, using a small number of purchases and rough
-timestamps --- as one might gain from e.g. public social media posts ---
-researchers were able to identify the person within millions of anonymised
-credit card chargers, thereby exposing their whole purchasing
-history. \autocite{demontjoyeUniqueShoppingMall2015}
+timestamps --- as one might gain from e.g. a person's public social media posts
+--- researchers were able to identify the person in a dump of millions of
+anonymised credit card charges, thereby exposing their whole purchasing
+history.  \autocite{demontjoyeUniqueShoppingMall2015}
 
 This is likely to continue exposing a lot of information about people, as long
-as companies keep mistakenly releasing information they deem anonymized.
+as companies keep mistakenly releasing information they deem sufficiently
+anonymized.
 
 \printbibliography
 
 \end{document}
-
-% - Identifying ppl in anonymized data sets (ref 61)
