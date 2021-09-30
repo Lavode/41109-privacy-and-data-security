@@ -1,0 +1,344 @@
+\documentclass[a4paper]{scrreprt}
+
+% Uncomment to optimize for double-sided printing.
+% \KOMAoptions{twoside}
+
+% Set binding correction manually, if known.
+% \KOMAoptions{BCOR=2cm}
+
+% Localization options
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+% Quotations
+\usepackage{dirtytalk}
+
+% Floats
+\usepackage{float}
+
+% Enhanced verbatim sections. We're mainly interested in
+% \verbatiminput though.
+\usepackage{verbatim}
+
+% Automatically remove leading whitespace in lstlisting
+\usepackage{lstautogobble}
+
+% PDF-compatible landscape mode.
+% Makes PDF viewers show the page rotated by 90°.
+\usepackage{pdflscape}
+
+% Advanced tables
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{longtable}
+
+% Fancy tablerules
+\usepackage{booktabs}
+
+% Graphics
+\usepackage{graphicx}
+
+% Current time
+\usepackage[useregional=numeric]{datetime2}
+
+% Float barriers.
+% Automatically add a FloatBarrier to each \section
+\usepackage[section]{placeins}
+
+% Custom header and footer
+\usepackage{fancyhdr}
+
+\usepackage{geometry}
+\usepackage{layout}
+
+% Math tools
+\usepackage{mathtools}
+% Math symbols
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{amsthm}
+% General symbols
+\usepackage{stmaryrd}
+
+% Utilities for quotations
+\usepackage{csquotes}
+
+% Bibliography
+\usepackage[
+  style=alphabetic,
+  backend=biber, % Default backend, just listed for completness
+  sorting=ynt % Sort by year, name, title
+]{biblatex}
+\addbibresource{references.bib}
+
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+% Bullet point
+\newcommand{\tabitem}{~~\llap{\textbullet}~~}
+
+\pagestyle{plain}
+% \fancyhf{}
+% \lhead{}
+% \lfoot{}
+% \rfoot{}
+% 
+% Source code & highlighting
+\usepackage{listings}
+
+% SI units
+\usepackage[binary-units=true]{siunitx}
+\DeclareSIUnit\cycles{cycles}
+
+\newcommand{\lecture}{41109 - Privacy and Data Security}
+\newcommand{\series}{02}
+% Convenience commands
+\newcommand{\mailsubject}{\lecture - Series \series}
+\newcommand{\maillink}[1]{\href{mailto:#1?subject=\mailsubject}
+                               {#1}}
+
+% Should use this command wherever the print date is mentioned.
+\newcommand{\printdate}{\today}
+
+\subject{\lecture}
+\title{Series \series}
+
+\author{Michael Senn \maillink{michael.senn@students.unibe.ch} - 16-126-880}
+
+\date{\printdate}
+
+% Needs to be the last command in the preamble, for one reason or
+% another. 
+\usepackage{hyperref}
+
+\begin{document}
+\maketitle
+
+
+\setcounter{chapter}{\numexpr \series - 1 \relax}
+
+\chapter{Series \series}
+
+\section{Privacy policies}
+
+\subsection{NZZ}
+
+As an example of a service partially reliant on ad revenue, we chose the mobile
+app and website of the NZZ. Their privacy policy --- which seems to be the same
+for both --- which was only accessible in German, can be found online on
+\url{https://www.nzz.ch/information/datenschutzerklaerung-ld.1388065}.
+\autocite{nzzgeneralsekretariat/datenschutzverantwortlicherNZZDatenschutzerklaerung}.
+
+\subsubsection{Sharing of data within NZZ group}
+
+In section 2.1 the policy immediately indicates that personalized data may be
+passed on to other entities of the NZZ group, and that their respective privacy
+policies apply as well. A list of seven entities part of the NZZ group is given
+with whom data may be shared.
+
+\begin{displayquote}
+		Ihre Daten können zudem zwischen bestimmten Gesellschaften des
+		Unternehmens NZZ ausgetauscht und von diesen Unternehmen für in dieser
+		Datenschutzerklärung erwähnte Zwecke verwendet werden.
+\end{displayquote}
+
+\subsubsection{Collection of data specific to non-anonymous users}
+
+In section 2.3 they state that, when registering an account, certain additional
+information such as billing address or e-mail is recorded.
+
+\begin{displayquote}
+		Im Rahmen des Registrationsprozesses, der Anfrageformulare oder dem
+		Download von Dateien, bei der Registration für einen Newsletter und bei
+		der Teilnahme an einem Wettbewerb oder Gewinnspiel erheben wir von
+		Ihnen personenbezogene Daten \textelp{}
+\end{displayquote}
+
+They then elaborate that this collected data may be freely used for
+advertisement purposes, as per later sections.
+
+\begin{displayquote}
+		Ihre Daten werden des Weiteren zur Kundenpflege, zu Marketingzwecken
+		zur bedarfsgerechten Gestaltung derselben (z.B. Pop-ups) verwendet.
+\end{displayquote}
+
+\subsubsection{Collection of data from anonymous users}
+
+In section 2.3 they explain that further data is collected from both anonymous
+as well as non-anonymous users, and that such data may also be passed on to
+third parties for marketing purposes.
+
+\begin{displayquote}
+		Beim Besuch unserer Webseiten erheben, speichern und verwenden wir
+		sowie Dritte von registrierten als auch von nicht registrierten Nutzern
+		Daten, \textelp{}
+		Die Nutzung unserer digitalen Angebote wird überdies mittels
+		verschiedener technischer Systeme, überwiegend von Drittanbietern
+		gemessen und ausgewertet. Diese Messungen können sowohl anonym als auch
+		personenbezogen erfolgen. \textelp{} Die mit solchen Technologien erhobenen
+		Informationen können zudem zu Marketingzwecken, \textelp{} verwendet werden.
+\end{displayquote}
+
+\subsubsection{Handover of data to third parties}
+
+In section 3 the details of when data is handed to third parties are specified.
+Their argumentation boils down to ``no data is forwarded to third parties unless
+we are required to do so by law, or unless we want to do so for marketing
+purposes''. A very meaningful commitment to data privacy indeed.
+
+\begin{displayquote}
+		Wir geben Personendaten nicht an Dritte weiter, ausser dies sei gesetzlich
+		vorgeschrieben oder durch einen richterlichen Entscheid so angeordnet oder der
+		Weitergabe an Dritte wurde zugestimmt. Davon ausgenommen ist die Weitergabe an
+		Dritte \textelp{} zur Zusammenarbeit mit Dienstleistungspartnern, welche uns
+		insbesondere im Marketingbereich, für die Analyse bestimmter technischer Daten
+		und für Funktionen der Verarbeitung und/oder Speicherung von Daten
+		unterstützend zur Seite stehen.
+\end{displayquote}
+
+\subsubsection{Data collection by third parties}
+
+Section 5 elaborates on data which may be \emph{collected} by third parties
+directly, rather than only given to third parties by the NZZ group. These seem
+to mostly be the result of various social-media integrations, such as the
+ubiquitous Facebook ``like'' button. One is told to reference these services'
+privacy policies in order to learn what data is collected, and what it is used
+for.
+
+\begin{displayquote}
+		Unsere digitalen Angebote sind auf vielfältige Weise mit Funktionen und
+		Systemen Dritter vernetzt, so etwa durch Einbindung von Plug-Ins
+		sozialer Netzwerke Dritter, wie insbesondere Facebook, LinkedIn, Google
+		oder Twitter, oder wenn Sie unseren Auftritt auf Webseiten Dritter
+		besuchen (z.B. Facebook Fanpage etc.). \textelp{} Dabei können weitere
+		Personendaten, wie IP-Adresse, persönliche Browsereinstellungen und
+		andere Parameter an diese Dritten übermittelt und dort gespeichert
+		werden. Welche Informationen diese Dritten erhalten und wie diese
+		verwendet werden, entnehmen Sie den Datenschutzhinweisen der jeweiligen
+		Netzwerke Dritter.
+\end{displayquote}
+
+\subsubsection{Legal basis for data processing}
+
+In section 6 the legal basis for data processing is provided. This includes the
+expected laws requiring them to keep e.g. transaction data for taxation
+purposes, but also the following gem where the usage of data for marketing
+purposes is justified as ``their interest in using this data for marketing
+outweighing the user's interest in data privacy''.
+
+\begin{displayquote}
+		Für weitere Verarbeitungen stützen wir uns auf unser überwiegendes
+		Interesse, beispielsweise unsere Angebote den Bedürfnissen unserer
+		Kunden optimal anzupassen und kontinuierlich zu verbessern und
+		Marketingaktivitäten durchzuführen, um Ihnen passende Produkte oder
+		Dienstleistungen anbieten zu können, sowie Ihnen Werbungen, die für Sie
+		relevant ist, anzuzeigen. \textelp{}
+		Wir haben unser Interesse auch dem Interesse unserer Nutzer
+		gegenübergestellt und sind zum Schluss gekommen, dass wir mit unseren
+		Datenbearbeitungen die Interessen oder Grundrechte unserer Nutzer nicht
+		übermässig tangieren und dass unsere Interessen bei diesen
+		Datenbearbeitungen entsprechend überwiegen.
+\end{displayquote}
+
+\subsection{Uni Bern Campus App}
+
+As an example of a service not reliant on advertisement, we chose the first
+version of the ``UniBE Mobile'' app, recently released by the
+``Forschungsstelle Digitale Nachhaltigkeit'' of the University of Bern. Its
+privacy policy --- in English --- can be found online at
+\url{https://www.uni-app.unibe.ch/the_app/privacy_policy/index_eng.html}.
+\autocite{universityofbernUniBEMobilePrivacy}
+
+\subsubsection{Collection of personal data}
+
+In section 1, it is explained that personal data is solely collected and logged
+during communication with the web servers of the University of Bern. This data
+contains what one would expect, such as the user's IP address, a timestamp, the
+requested URL and so on.
+
+\begin{displayquote}
+		Personal data is only collected in connection with communication with
+		the web servers of the University of Bern.
+\end{displayquote}
+
+\subsubsection{Collection of data for tracking}
+
+While no data is used for advertisement purposes, non-personal information
+\emph{is} connected for the purpose of tracking users' usage of the app.
+Section 4 details what information is collected, and in what way.
+
+\begin{displayquote}
+		In order to optimize and statistically evaluate the UniBE Mobile and to
+		better adapt its content structures and navigation mechanisms to the
+		needs of users, screen views and clicked elements within a page are
+		logged and analyzed. For this purpose the software Firebase is used.
+		The following is collected: Events, user interactions, system events
+		and errors that occur with respect to UniBE Mobile. The data is
+		collected and stored on a Firebase server. The access statistics are
+		anonymized. It is not possible to assign the analysis results to a
+		specific IP address.
+\end{displayquote}
+
+\section{App-specific privacy information}
+
+% unibe https://apps.apple.com/ch/app/unibe-mobile/id1557969608
+% nzz https://apps.apple.com/ch/app/nzz/id345569411
+% instagram https://apps.apple.com/us/app/instagram/id389801252
+% signal https://apps.apple.com/us/app/tiktok/id835599320j
+
+The four iOS apps chosen for comparison were the NZZ, the UniBE campus, the
+Instagram and the Signal messenger ones. Table \ref{tbl:data_access_apps}
+lists, for each of those, what kind of data they do have access to according to
+the ``app privacy'' section on their store page. Based on that section we
+differentiate three ways in which data may be used: Accessed but not linked to
+the user's identity (``app''), accessed and linked to the user's identity
+(``identity''), and shared with third parties (``third''). Only the highest
+access level for each data type is listed, so if a data type is both linked to
+the user's identity and shared with third parties, the table will only list
+``third''.
+
+It is immediately visible how a privacy-conscious app such as Signal messenger
+only accesses --- but does not link nor share --- the user's contact info. Its
+access to data is limited as much as can be, while still providing its service.
+
+Apps such as the UniBE campus app or the NZZ one access additional types of
+data, most of which they also share with third parties. In the case of the
+UniBE app this is likely due to a third-party service used for usage analysis,
+while the NZZ app will share that data with third-party marketing companies.
+
+Lastly Instagram accesses a lot of data for which there is no apparent reason
+why it might require it for its core functionality, such as purchasing data or
+health data. While it does claim not to share this data with third parties,
+this is not too surprising in that Facebook itself is a company active ni the
+advertisement sector, so has no need to involve third parties to make use of
+the data.
+
+\begin{table}
+		\centering
+		\begin{tabular}{lllll}
+				\toprule
+				Data type & Signal & UniBE & NZZ & Instagram \\
+				\midrule
+				Contact info      & app & identity & identity & third \\
+				Identifiers       & -   & third    & third    & third \\
+				Usage data        & -   & third    & third    & app \\
+				Diagnostics       & -   & third    & third    & app \\
+				Location          & -   & -        & third    & app \\
+				Other data        & -   & -        & -        & third \\
+				Health \& fitness & -   & -        & -        & app \\
+				Financial info    & -   & -        & -        & app \\
+				User content      & -   & -        & -        & app \\
+				Browsing history  & -   & -        & -        & app \\
+				Purchases         & -   & -        & -        & app \\
+				Contacts          & -   & -        & -        & app \\
+				Search history    & -   & -        & -        & app \\
+				Sensitive info    & -   & -        & -        & app \\
+				\bottomrule
+		\end{tabular}
+		\caption{Data access of several apps}
+		\label{tbl:data_access_apps}
+\end{table}
+
+\printbibliography
+
+\end{document}
