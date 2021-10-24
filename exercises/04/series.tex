@@ -1,0 +1,190 @@
+\documentclass[a4paper]{scrreprt}
+
+% Uncomment to optimize for double-sided printing.
+% \KOMAoptions{twoside}
+
+% Set binding correction manually, if known.
+% \KOMAoptions{BCOR=2cm}
+
+% Localization options
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+% Quotations
+\usepackage{dirtytalk}
+
+% Floats
+\usepackage{float}
+
+% Enhanced verbatim sections. We're mainly interested in
+% \verbatiminput though.
+\usepackage{verbatim}
+
+% Automatically remove leading whitespace in lstlisting
+\usepackage{lstautogobble}
+
+% PDF-compatible landscape mode.
+% Makes PDF viewers show the page rotated by 90°.
+\usepackage{pdflscape}
+
+% Advanced tables
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{longtable}
+
+% Fancy tablerules
+\usepackage{booktabs}
+
+% Graphics
+\usepackage{graphicx}
+
+% Current time
+\usepackage[useregional=numeric]{datetime2}
+
+% Float barriers.
+% Automatically add a FloatBarrier to each \section
+\usepackage[section]{placeins}
+
+% Custom header and footer
+\usepackage{fancyhdr}
+
+\usepackage{geometry}
+\usepackage{layout}
+
+% Math tools
+\usepackage{mathtools}
+% Math symbols
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{amsthm}
+% General symbols
+\usepackage{stmaryrd}
+
+% Utilities for quotations
+\usepackage{csquotes}
+
+% Bibliography
+\usepackage[
+  style=alphabetic,
+  backend=biber, % Default backend, just listed for completness
+  sorting=ynt % Sort by year, name, title
+]{biblatex}
+\addbibresource{references.bib}
+
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+% Bullet point
+\newcommand{\tabitem}{~~\llap{\textbullet}~~}
+
+\pagestyle{plain}
+% \fancyhf{}
+% \lhead{}
+% \lfoot{}
+% \rfoot{}
+% 
+% Source code & highlighting
+\usepackage{listings}
+
+% SI units
+\usepackage[binary-units=true]{siunitx}
+\DeclareSIUnit\cycles{cycles}
+
+\newcommand{\lecture}{41109 - Privacy and Data Security}
+\newcommand{\series}{04}
+% Convenience commands
+\newcommand{\mailsubject}{\lecture - Series \series}
+\newcommand{\maillink}[1]{\href{mailto:#1?subject=\mailsubject}
+                               {#1}}
+
+% Should use this command wherever the print date is mentioned.
+\newcommand{\printdate}{\today}
+
+\subject{\lecture}
+\title{Series \series}
+
+\author{Michael Senn \maillink{michael.senn@students.unibe.ch} --- 16-126-880}
+
+\date{\printdate}
+
+% Needs to be the last command in the preamble, for one reason or
+% another. 
+\usepackage{hyperref}
+
+\begin{document}
+\maketitle
+
+
+\setcounter{chapter}{\numexpr \series - 1 \relax}
+
+\chapter{Series \series}
+
+\section{Tracking through email and by cars}
+
+The paper I chose to read was `I never signed up for this! Privacy implications
+of email tracking'\autocite{englehardtNeverSignedThis2018}.
+
+The paper set out to investigate whether web-tracking techniques are also
+applied to track people by means of e-mail. It was motivated by the observation
+that mail clients support a subset of HTML for mail bodies, hence permitting
+the use of e.g. tracking pixels within mail bodies.
+
+To do so, a web crawler was developed which attempted to look for, and sign up
+to, mailing lists. The most popular website, with a focus on shopping and news
+sites, were visted. If a signup form for a mailing list was found, the crawler
+attempted to fill it out. About one-third the websites where a form was filled
+out ended up sending at least one e-mail by the end of the study.
+
+Mails which were received were then processed. In a first step, links in
+confirmation mails --- for those mailing lists which required a secondary
+confirmation --- were visisted. Then, the opening of those mails in a webmail
+client was simulated, and resulting network traffic analyzed. The focus was on
+requests to `third-party' domains which, in the case of e-mails, was defined as
+any request to a domain other than the one of the sender's address, and the one
+on which the crawler signed up for the mailing list. Results showed that 
+\SI{85}{\percent} of e-mails issued at least one third-party request.
+
+These third-party requests were further analyzed, by checking whether they
+leaked the user's e-mail address. To do so, all URI query parameters were
+checked for whether they matched the e-mail address, encoded by means of a set
+of various encoding operations such as hash functions, Base64 encoding, gzip
+compression etc. \SI{11}{\percent} third-party requests lead to the user's
+e-mail leaking, in plaintext or as a hash.
+
+In a further step, the opening of links contained in e-mails was analyzed.
+Results showed that this could lead to a cascade of further third-party
+requests issued by one's browser, leaking the e-mail to --- and establishing a
+relation with the user's tracking profile with --- additional third parties.
+
+Lastly, defense mechanisms were evaluated and new ones proposed. It was shown
+that HTML filtering on the mail server, or request blocking on the mail client,
+could help to block this kind of tracking without interfering with regular
+e-mail functionality. Additionally, browser-based blocklists could be extended
+with e-mail specific tracking services, to prevent tracking when a link
+included in an e-mail is opened in the user's browser.
+
+\section{Am I unique?}
+
+Based on the browser fingerprint determined by
+\href{https://amiunique.org}{https://amiunique.org} it was evident that most
+the identifying information is the result of Javascript calls.  Among those,
+the list of fonts, the canvas fingerprinting, and WebGL parameters, were
+responsible for most of the identifying information.
+
+As far as pure HTTP information is concerned, only the \emph{User-Agent} header
+was uncommon That was to be expected when using the most-recent Firefox
+version on Linux --- a rather uncommon combination by itself.
+
+To prevent the browser fingerprint from being unique, it was hence sufficient
+to outright block all non-trusted JavaScript by means of e.g. the
+\emph{NoScript} extension. Needless to say this completely broke the vast
+majority of modern websites, requiring manual whitelisting of trusted content.
+
+A more sane solution might thus be the use of extensions which target known JS
+trackers by means of a blacklist, such es EFF's \emph{PrivacyBadger} extension.
+While this is bound to not block certain trackers, it will not require manual
+effort whenever one visits a new website.
+
+\printbibliography
+
+\end{document}
