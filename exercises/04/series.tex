@@ -126,14 +126,15 @@ of email tracking'\autocite{englehardtNeverSignedThis2018}.
 
 The paper set out to investigate whether web-tracking techniques are also
 applied to track people by means of e-mail. It was motivated by the observation
-that mail clients support a subset of HTML for mail bodies, hence permitting
-the use of e.g. tracking pixels within mail bodies.
+that mail clients support a subset of HTML in mail bodies, hence permitting
+the use of loading resources for tracking purposes.
 
-To do so, a web crawler was developed which attempted to look for, and sign up
-to, mailing lists. The most popular website, with a focus on shopping and news
-sites, were visted. If a signup form for a mailing list was found, the crawler
-attempted to fill it out. About one-third the websites where a form was filled
-out ended up sending at least one e-mail by the end of the study.
+To investigate this, a web crawler was developed which attempted to look for,
+and sign up to, mailing lists. The most popular websites, with a focus on
+shopping and news sites, were visted. If a signup form for a mailing list was
+found, the crawler attempted to fill it out. About one-third of websites where
+a form was filled out ended up sending at least one e-mail by the end of the
+study.
 
 Mails which were received were then processed. In a first step, links in
 confirmation mails --- for those mailing lists which required a secondary
@@ -151,10 +152,12 @@ of various encoding operations such as hash functions, Base64 encoding, gzip
 compression etc. \SI{11}{\percent} third-party requests lead to the user's
 e-mail leaking, in plaintext or as a hash.
 
-In a further step, the opening of links contained in e-mails was analyzed.
-Results showed that this could lead to a cascade of further third-party
-requests issued by one's browser, leaking the e-mail to --- and establishing a
-relation with the user's tracking profile with --- additional third parties.
+In a further step, the opening of links contained in e-mails was analyzed. As
+these links are opened in a full web browser, additional tracking mechanisms
+--- specifically full Javascript support --- came into effect.  Results showed
+that this could lead to a cascade of further third-party requests issued by
+one's browser, leaking the e-mail to --- and establishing a relation with the
+user's tracking profile with --- additional third parties.
 
 Lastly, defense mechanisms were evaluated and new ones proposed. It was shown
 that HTML filtering on the mail server, or request blocking on the mail client,
