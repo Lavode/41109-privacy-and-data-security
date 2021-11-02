@@ -1,0 +1,199 @@
+\documentclass[a4paper]{scrreprt}
+
+% Uncomment to optimize for double-sided printing.
+% \KOMAoptions{twoside}
+
+% Set binding correction manually, if known.
+% \KOMAoptions{BCOR=2cm}
+
+% Localization options
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+% Quotations
+\usepackage{dirtytalk}
+
+% Floats
+\usepackage{float}
+
+% Enhanced verbatim sections. We're mainly interested in
+% \verbatiminput though.
+\usepackage{verbatim}
+
+% Automatically remove leading whitespace in lstlisting
+\usepackage{lstautogobble}
+
+% CSV to tables
+\usepackage{csvsimple}
+
+% PDF-compatible landscape mode.
+% Makes PDF viewers show the page rotated by 90°.
+\usepackage{pdflscape}
+
+% Advanced tables
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{longtable}
+
+% Fancy tablerules
+\usepackage{booktabs}
+
+% Graphics
+\usepackage{graphicx}
+
+% Current time
+\usepackage[useregional=numeric]{datetime2}
+
+% Float barriers.
+% Automatically add a FloatBarrier to each \section
+\usepackage[section]{placeins}
+
+% Custom header and footer
+\usepackage{fancyhdr}
+
+\usepackage{geometry}
+\usepackage{layout}
+
+% Math tools
+\usepackage{mathtools}
+% Math symbols
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{amsthm}
+% General symbols
+\usepackage{stmaryrd}
+
+% Utilities for quotations
+\usepackage{csquotes}
+
+% Bibliography
+\usepackage[
+  style=alphabetic,
+  backend=biber, % Default backend, just listed for completness
+  sorting=ynt % Sort by year, name, title
+]{biblatex}
+\addbibresource{references.bib}
+
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+% Bullet point
+\newcommand{\tabitem}{~~\llap{\textbullet}~~}
+
+\pagestyle{plain}
+% \fancyhf{}
+% \lhead{}
+% \lfoot{}
+% \rfoot{}
+% 
+% Source code & highlighting
+\usepackage{listings}
+
+% SI units
+\usepackage[binary-units=true]{siunitx}
+\DeclareSIUnit\cycles{cycles}
+
+\newcommand{\lecture}{41109 - Privacy and Data Security}
+\newcommand{\series}{05}
+% Convenience commands
+\newcommand{\mailsubject}{\lecture - Series \series}
+\newcommand{\maillink}[1]{\href{mailto:#1?subject=\mailsubject}
+                               {#1}}
+
+% Should use this command wherever the print date is mentioned.
+\newcommand{\printdate}{\today}
+
+\subject{\lecture}
+\title{Series \series}
+
+\author{Michael Senn \maillink{michael.senn@students.unibe.ch} --- 16-126-880}
+
+\date{\printdate}
+
+% Needs to be the last command in the preamble, for one reason or
+% another. 
+\usepackage{hyperref}
+
+\begin{document}
+\maketitle
+
+
+\setcounter{chapter}{\numexpr \series - 1 \relax}
+
+\chapter{Series \series}
+
+\section{\emph{k}-Anonymity and \emph{l}-Diversity}
+
+\subsection{Identifiers, Quasi-Identifiers and Sensistive attributes}
+
+The following attribute split was chosen:
+\begin{description}
+  \item[Sensitive] Operating system --- as none wants to be made fun of for
+    using Mac OS
+  \item[Quasi-Identifiers] Semester, Points --- while not directly PII, the
+    combination of both nicely identifies the individual
+  \item[Identifiers] First name, last name, mail, postal code, city
+\end{description}
+
+\subsection{3-anonymity}
+
+3-anonymity was chosen by generalizing the semester and point attributes into
+disjont intervals, as pictured in table \ref{tbl:3_anonymity}. Last names are
+shown for reference. Clearly 3-anonymity holds, as each group identified by the
+semester and point intervals contains at least three members.
+
+\begin{table}
+  \centering
+
+  \csvreader[
+    separator=semicolon,
+    tabular=llllll,
+	table head=\toprule Name & OS & Semester & Sem. Range & Points & Pts Range \\ \midrule,
+    table foot=\bottomrule,
+    head to column names
+  ]{data/3_anonymity.csv}
+  {1=\name, 6=\os, 7=\sem, 8=\semr, 9=\pts, 10=\ptsr}%
+  {\name & \os & \sem & \semr & \pts & \ptsr }%
+  \label{tbl:3_anonymity}
+  \caption{3-anomyity}
+\end{table}
+
+\subsection{Difficulty of achieving 5-anonymity}
+
+Clearly the easiest anonymity to achieve is emph{1-anonymity}, as any dataset
+provides that by default. As such it could be considered more difficult to
+achieve \emph{5-anonymity} than \emph{3-anonymity}, although the added
+difficulty merely manifests itself in having to generalize attributes further
+--- in our case broader (and fewer, or overlapping) intervals would have to be
+chosen.
+
+\subsection{3-diversity}
+
+The 3-anonymous dataset above does not provide 3-diversity, as e.g. the group
+identified by the semester range $[0, 3]$ and points range $[0, 40]$ only
+contains two rather than three different operating systems.
+
+3-diversity was achieved by dropping one of the semester ranges and expanding
+the other two, as shown in table \ref{tbl:3_diversity}. Now, each group
+identified by its semester and points range contains members with at least
+three different operating systems.
+
+\begin{table}
+  \centering
+
+  \csvreader[
+    separator=semicolon,
+    tabular=llllll,
+	table head=\toprule Name & OS & Semester & Sem. Range & Points & Pts Range \\ \midrule,
+    table foot=\bottomrule,
+    head to column names
+  ]{data/3_diversity.csv}
+  {1=\name, 6=\os, 7=\sem, 8=\semr, 9=\pts, 10=\ptsr}%
+  {\name & \os & \sem & \semr & \pts & \ptsr }%
+  \label{tbl:3_diversity}
+  \caption{3-diversity}
+\end{table}
+
+\printbibliography
+
+\end{document}
