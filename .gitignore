@@ -1,3 +1,7 @@
 exercises/**/*.log
 exercises/**/*.pdf
 library/
+.Rproj.user
+.RData
+.Rhistory
+r.Rproj

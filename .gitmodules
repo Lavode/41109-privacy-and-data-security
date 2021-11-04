@@ -1,0 +1,3 @@
+[submodule "exercises/06/mondrian"]
+	path = exercises/06/mondrian
+	url = https://github.com/qiyuangong/Mondrian.git
