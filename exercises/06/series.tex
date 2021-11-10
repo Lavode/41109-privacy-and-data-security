@@ -130,12 +130,12 @@ attributes. As such $C$ contains at least $l$ rows, and hence has
 \emph{l}-anonymity.
 
 Similarly let $A$ be a dataset sanitized with probabilistic \emph{l}-diversity.
-Then for every equivalence class $C$, every combination of secret attributes
-$(s1, \ldots, s_n)$ contained in $C$ makes up at most $\frac{1}{l}$ of the
-equivalence class. The smallest possible equivalence class $C$ will thus have
-$l$ combinations of different sensitive information, each making up
-$\frac{1}{l}$ of the equivalence class. As such it has distinct
-\emph{l}-diversity, and hence also \emph{l}-anonymity.
+Then for every equivalence class $C$, every combination of secret attribute
+values $(s1, \ldots, s_n)$ contained in $C$ makes up at most a fraction of
+$l^{-1}$ of the equivalence class. Any such equivalence class $C$ will thus
+have at least $l$ combinations of different sensitive information, each
+accounting for $l^{-1}$ of the equivalence class. As such it has distinct
+\emph{l}-diversity, and per above also also \emph{l}-anonymity.
 
 \section{Implementing \emph{k}-anonymity with the Mondrian algorithm}
 
@@ -143,7 +143,7 @@ $\frac{1}{l}$ of the equivalence class. As such it has distinct
 
 The provided implementation of the Mondrian algorithm was used to sanitze the
 sample dataset to various levels of \emph{k}-anonymity. The achieved ``NCP''
---- a measure in the range of $[0, 1]$ of how generalized the data is ---
+--- a measure of how generalized the data is, in the range of $[0, 1]$  ---
 plotted versus the $k$ parameter is shown in figure \ref{fig:k_anonymity_ncp}.
 
 \begin{figure}
@@ -153,11 +153,11 @@ plotted versus the $k$ parameter is shown in figure \ref{fig:k_anonymity_ncp}.
 		\label{fig:k_anonymity_ncp}
 \end{figure}
 
-As expected the degree of generalization which has to be utilized goes up the
-higher $k$ is. For \emph{3}-anonymity it is around \SI{20}{\percent}, for
-\emph{5}-anonymity around \SI{30}{\percent}, for \emph{10}-anonymity around
-\SI{50}{\percent} and for \emph{74}-anonymity --- $74$ being the size of the
-full dataset --- as expected \SI{100}{\percent}.
+As expected the degree of generalization which is required goes up the higher
+$k$ is. For 3-anonymity it is around \SI{20}{\percent}, for
+5-anonymity around \SI{30}{\percent}, for 10-anonymity around
+\SI{50}{\percent} and for 74-anonymity --- $74$ being the size of the
+full dataset --- \SI{100}{\percent}.
 
 No meaningful difference is visible between strict and relaxed mode of the
 Mondrian algorithm.
@@ -176,8 +176,8 @@ sequence, shuffling its input file inbetween invocations.
 
 Figure \ref{fig:k_anonymity_ncp_randomized} shows that, with 100 attempts each,
 marginally lower NCP values can be achieved --- albeit at the cost of
-significantly increasing the time anonymization takes. Improvements are usually
-in the range of \SIrange{2}{5}{\percent}.
+significantly increasing the time anonymization takes. Improvements were in the
+range of \SIrange{2}{5}{\percent}.
 
 \begin{figure}
 		\centering
