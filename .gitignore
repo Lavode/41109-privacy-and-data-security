@@ -5,3 +5,5 @@ library/
 .RData
 .Rhistory
 r.Rproj
+.ipynb_checkpoints
+exercises/05/data/ex05*
