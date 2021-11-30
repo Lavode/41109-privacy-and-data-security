@@ -1,0 +1,169 @@
+\documentclass[a4paper]{scrreprt}
+
+% Uncomment to optimize for double-sided printing.
+% \KOMAoptions{twoside}
+
+% Set binding correction manually, if known.
+% \KOMAoptions{BCOR=2cm}
+
+% Localization options
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+% Quotations
+\usepackage{dirtytalk}
+
+% Floats
+\usepackage{float}
+
+% Enhanced verbatim sections. We're mainly interested in
+% \verbatiminput though.
+\usepackage{verbatim}
+
+% Automatically remove leading whitespace in lstlisting
+\usepackage{lstautogobble}
+
+% CSV to tables
+\usepackage{csvsimple}
+
+% PDF-compatible landscape mode.
+% Makes PDF viewers show the page rotated by 90°.
+\usepackage{pdflscape}
+
+% Advanced tables
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{longtable}
+
+% Fancy tablerules
+\usepackage{booktabs}
+
+% Graphics
+\usepackage{graphicx}
+
+% Current time
+\usepackage[useregional=numeric]{datetime2}
+
+% Float barriers.
+% Automatically add a FloatBarrier to each \section
+\usepackage[section]{placeins}
+
+% Custom header and footer
+\usepackage{fancyhdr}
+
+\usepackage{geometry}
+\usepackage{layout}
+
+% Math tools
+\usepackage{mathtools}
+% Math symbols
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{amsthm}
+% General symbols
+\usepackage{stmaryrd}
+
+% Utilities for quotations
+\usepackage{csquotes}
+
+% Bibliography
+\usepackage[
+  style=alphabetic,
+  backend=biber, % Default backend, just listed for completness
+  sorting=ynt % Sort by year, name, title
+]{biblatex}
+\addbibresource{references.bib}
+
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+% Bullet point
+\newcommand{\tabitem}{~~\llap{\textbullet}~~}
+
+\pagestyle{plain}
+% \fancyhf{}
+% \lhead{}
+% \lfoot{}
+% \rfoot{}
+% 
+% Source code & highlighting
+\usepackage{listings}
+
+% SI units
+\usepackage[binary-units=true]{siunitx}
+\DeclareSIUnit\cycles{cycles}
+
+\newcommand{\lecture}{41109 - Privacy and Data Security}
+\newcommand{\series}{09}
+% Convenience commands
+\newcommand{\mailsubject}{\lecture - Series \series}
+\newcommand{\maillink}[1]{\href{mailto:#1?subject=\mailsubject}
+                               {#1}}
+
+% Should use this command wherever the print date is mentioned.
+\newcommand{\printdate}{\today}
+
+\subject{\lecture}
+\title{Series \series}
+
+\author{Michael Senn \maillink{michael.senn@students.unibe.ch} --- 16-126-880}
+
+\date{\printdate}
+
+% Needs to be the last command in the preamble, for one reason or
+% another. 
+\usepackage{hyperref}
+
+\begin{document}
+\maketitle
+
+
+\setcounter{chapter}{\numexpr \series - 1 \relax}
+
+\chapter{Series \series}
+
+\section{Large-scale differentially private data analysis}
+
+\subsection{Background}
+
+During the Covid pandemic --- for lack of better things to do --- Switzerland
+saw a sudden surge of people starting to manufacture their own cheese at home.
+As a result, OnlyCheese AG was founded. The company provides a platform where
+people can share information about their cheese creation process. Its content
+is classified into three categories --- tips \& tricks, recipes, and media
+(pictures and videos).
+
+The platform is available both as a website as well as an app for all major
+mobile operating system. An in-app recommendation system was added recently,
+recommending new creators which are similar to people's interests.
+
+By 2021 one in four Swiss citizens is a member of the platform, with half of
+them using the mobile app. The company decides that it is time to learn how
+their customers use the platorm, and wants to answer three questions:
+\begin{enumerate}
+		\item What type of content leads to the most engagement
+		\item By what means (in-app search, direct link, in-app
+				recommendations) do people find new creators
+		\item What keywords are present in the most popular recipes
+\end{enumerate}
+
+\subsection{Reusing existing work by Google and Apple privacy teams}
+
+The paper on `learning with privacy on scale' by Apple provides algorithms for
+frequency estimation in a differentially-private setting. These algorithms can
+be reused to answer the questions asked by the company.
+
+For the first two questions the known-dictionary setting applies, for the last
+the unknowon-dictionary one does. All three questions are concerned with some
+form of frequency analysis though, so the algorithms from the paper can be used.
+
+A similar system setup as described in the paper can be reused, with the mobile
+app (respectively in-browser Javascript) collecting and privatizing such data,
+and periodically reporting it to an ingestion server. This server then
+immediately removes all identifying information such as the client's IP
+address, before forwarding it to an aggregation service which calculates
+differentially-private histograms.
+
+\printbibliography
+
+\end{document}
