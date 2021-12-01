@@ -130,14 +130,14 @@ During the Covid pandemic --- for lack of better things to do --- Switzerland
 saw a sudden surge of people starting to manufacture their own cheese at home.
 As a result, OnlyCheese AG was founded. The company provides a platform where
 people can share information about their cheese creation process. Its content
-is classified into three categories --- tips \& tricks, recipes, and media
+is classified into three categories: Tips \& tricks, recipes, and media
 (pictures and videos).
 
 The platform is available both as a website as well as an app for all major
 mobile operating system. An in-app recommendation system was added recently,
 recommending new creators which are similar to people's interests.
 
-By 2021 one in four Swiss citizens is a member of the platform, with half of
+By 2021, one in four Swiss citizens is a member of the platform, with half of
 them using the mobile app. The company decides that it is time to learn how
 their customers use the platorm, and wants to answer three questions:
 \begin{enumerate}
@@ -149,20 +149,26 @@ their customers use the platorm, and wants to answer three questions:
 
 \subsection{Reusing existing work by Google and Apple privacy teams}
 
-The paper on `learning with privacy on scale' by Apple provides algorithms for
-frequency estimation in a differentially-private setting. These algorithms can
-be reused to answer the questions asked by the company.
+The paper on `learning with privacy at scale' by Apple provides algorithms for
+frequency estimation in a differentially-private setting.
+\autocite{differentialprivacyteamappleLearningPrivacyScale}. These algorithms
+can be reused for the stated problem.
 
-For the first two questions the known-dictionary setting applies, for the last
-the unknowon-dictionary one does. All three questions are concerned with some
-form of frequency analysis though, so the algorithms from the paper can be used.
+The first two posed questions are in the known-dictionary setting, as the
+content categories, respectively ways by which content can be found, are known
+ahead of time. The last question is in the unknown-dictionary setting. As all
+three questions are concerned with some form of frequency analysis, the
+algorithms from the paper are applicable.
 
-A similar system setup as described in the paper can be reused, with the mobile
-app (respectively in-browser Javascript) collecting and privatizing such data,
-and periodically reporting it to an ingestion server. This server then
+A similar system setup as described in the paper can also be reused, with the
+mobile app (respectively in-browser Javascript) collecting and privatizing such
+data, and periodically reporting it to an ingestion server. This server then
 immediately removes all identifying information such as the client's IP
 address, before forwarding it to an aggregation service which calculates
 differentially-private histograms.
+
+Parameters of the algorithms will howevr have to be chosen appropriately, as
+the expected diversity of the content is high.
 
 \printbibliography
 
