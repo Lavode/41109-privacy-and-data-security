@@ -86,22 +86,8 @@ def hash_token(s):
     if not luhn(s):
         raise ValueError(f"Input was not a valid Luhn-checksummed number: {s}")
 
-    # Input is numeric, so ASCII is a sane enough choice
-    input_bytes = s.encode('ascii')
-    n = len(s)
-
-    while True:
-        input_bytes = hashlib.sha256(input_bytes).digest()
-
-        # Interpret digest bytes as big-endian integer, reduce to an appropriate length
-        # This is safe as SHA256's output is (conjectured to be)
-        # indistinguishable from uniform random.
-        candidate = str(int.from_bytes(input_bytes, "big") % 10**n)
-
-        # If we got a valid Luhn-checksumed number, return it. Else continue
-        # trying.
-        if luhn(candidate):
-            return candidate
+    cycle = lambda b: hashlib.sha256(b).digest()
+    return _luhn_cycle_walk(cycle, s)
 
 def mac_token(key, s):
     '''Generates a new valid Luhn-checksummed number using an HMAC construction.
@@ -125,12 +111,27 @@ def mac_token(key, s):
         raise ValueError(f"Input was not a valid Luhn-checksummed number: {s}")
 
     # Input is numeric, so ASCII is a sane enough choice
-    input_bytes = s.encode('ascii')
     key_bytes = key.encode('ascii')
+
+    cycle = lambda b: hmac.digest(key_bytes, b, "sha256")
+    return _luhn_cycle_walk(cycle, s)
+
+def _luhn_cycle_walk(cycle, s):
+    '''Cycle-walk algorithm to find Luhn-checksumed numbers.
+
+    Input:
+      cycle: Function which takes a bytes object, and outputs next element on cycle
+      s: string representation of number to use as starting point
+
+    Returns:
+      bytes: Next element on cycle
+    '''
+
     n = len(s)
+    input_bytes = s.encode('ascii')
 
     while True:
-        input_bytes = hmac.digest(key_bytes, input_bytes, 'sha256')
+        input_bytes = cycle(input_bytes)
 
         # Interpret digest bytes as big-endian integer, reduce to an appropriate length
         # This is safe as SHA256's output is (conjectured to be)
