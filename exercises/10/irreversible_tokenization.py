@@ -1,4 +1,5 @@
 import hashlib
+import hmac
 
 def calculate_luhn_checksum(s):
     '''Calculates the Luhn checksum of the number encoded in s
@@ -67,7 +68,7 @@ def luhn(s):
     return actual_checksum == int(checksum)
 
 def hash_token(s):
-    '''Generates a new valid Luhn-checksummed number using a one-way hash function
+    '''Generates a new valid Luhn-checksummed number using a one-way hash function.
 
     Generation of a new number happens by means of the cycle-walking algorithm,
     with the SHA256 hash function.
@@ -91,6 +92,45 @@ def hash_token(s):
 
     while True:
         input_bytes = hashlib.sha256(input_bytes).digest()
+
+        # Interpret digest bytes as big-endian integer, reduce to an appropriate length
+        # This is safe as SHA256's output is (conjectured to be)
+        # indistinguishable from uniform random.
+        candidate = str(int.from_bytes(input_bytes, "big") % 10**n)
+
+        # If we got a valid Luhn-checksumed number, return it. Else continue
+        # trying.
+        if luhn(candidate):
+            return candidate
+
+def mac_token(key, s):
+    '''Generates a new valid Luhn-checksummed number using an HMAC construction.
+
+    Generation of a new number happens by means of the cycle-walking algorithm,
+    with the HMAC-SHA256 MAC.
+
+    Input:
+      key: String to use as key for HMAC. Will be encoded as ASCII to get key
+           bytes.
+      s: String representation of base-10 number to use as starting point
+
+    Raises:
+      ValueError: If input was not a valid Luhn-checksummed number
+
+    Returns:
+      str: Base-10 representation of a new Luhn-checksummed sequence
+    '''
+    # Raise unless valid Luhn checksum
+    if not luhn(s):
+        raise ValueError(f"Input was not a valid Luhn-checksummed number: {s}")
+
+    # Input is numeric, so ASCII is a sane enough choice
+    input_bytes = s.encode('ascii')
+    key_bytes = key.encode('ascii')
+    n = len(s)
+
+    while True:
+        input_bytes = hmac.digest(key_bytes, input_bytes, 'sha256')
 
         # Interpret digest bytes as big-endian integer, reduce to an appropriate length
         # This is safe as SHA256's output is (conjectured to be)
