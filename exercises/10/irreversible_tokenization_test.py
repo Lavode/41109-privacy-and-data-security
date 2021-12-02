@@ -1,6 +1,8 @@
 import unittest
 import irreversible_tokenization as it
 
+import util
+
 class TestIrreversibleTokenization(unittest.TestCase):
     def test_hash_token(self):
         next_token = it.hash_token("79927398713")
@@ -8,7 +10,7 @@ class TestIrreversibleTokenization(unittest.TestCase):
 
         for i in range(10):
             next_token = it.hash_token(next_token)
-            self.assertTrue(it.luhn(str(next_token)))
+            self.assertTrue(util.luhn(str(next_token)))
 
     def test_hash_token_raises_on_invalid_input(self):
         s = "79927398712"
@@ -22,7 +24,7 @@ class TestIrreversibleTokenization(unittest.TestCase):
 
         for i in range(10):
             next_token = it.mac_token(key, next_token)
-            self.assertTrue(it.luhn(str(next_token)))
+            self.assertTrue(util.luhn(str(next_token)))
 
     def test_mac_token_raises_on_invalid_input(self):
         s = "79927398712"
@@ -33,34 +35,34 @@ class TestIrreversibleTokenization(unittest.TestCase):
 class TestLuhnChecksum(unittest.TestCase):
     def test_calculation(self):
         s = "7992739871"
-        checksum = it.calculate_luhn_checksum(s)
+        checksum = util.calculate_luhn_checksum(s)
         self.assertEqual(checksum, 3)
 
         s = "13482517501235"
-        checksum = it.calculate_luhn_checksum(s)
+        checksum = util.calculate_luhn_checksum(s)
         self.assertEqual(checksum, 9)
 
     def test_calculation_raises_on_invalid_number(self):
         s = "79helloworld"
         with self.assertRaises(ValueError):
-            it.calculate_luhn_checksum(s)
+            util.calculate_luhn_checksum(s)
 
     def test_verification(self):
         s = "79927398713"
-        self.assertTrue(it.luhn(s))
+        self.assertTrue(util.luhn(s))
 
         s = "79927398714"
-        self.assertFalse(it.luhn(s))
+        self.assertFalse(util.luhn(s))
 
     def test_verification_raises_on_invalid_number(self):
         s = "7992739871x"
         with self.assertRaises(ValueError):
-            it.luhn(s)
+            util.luhn(s)
 
     def test_validation_raises_on_too_short_number(self):
         s = "3"
         with self.assertRaises(ValueError):
-            it.luhn(s)
+            util.luhn(s)
 
 if __name__ == '__main__':
     unittest.main()
