@@ -152,12 +152,13 @@ secure stegosystem.
 
 \section{Practical steganography}
 
-Using `steghide', messages were embedded in a $448 \times 274$ bitmap image.
-The largest message which could be emdedded was \SI{30}{\kilo\byte}.  Figure
-\ref{fig:steganography} shows the cover image on the left, the image with the
-embedded \SI{30}{\kilo\byte} text data on the right, and the difference of
-the two images in the middle.  Clearly, no difference is visible to the naked
-eye.
+Using `steghide' \autocite{hetzlGraphTheoreticApproach2005}, parts of RFC 8017
+\autocite{rfc8017} were embedded in a $448 \times 274$ bitmap image
+\autocite{munroeXkcd538Security}.  The largest message which could be emdedded
+was \SI{30}{\kilo\byte}.  Figure \ref{fig:steganography} shows the cover image
+on the left, the image with the embedded \SI{30}{\kilo\byte} text data on the
+right, and the difference of the two images in the middle.  Clearly, no
+difference is visible to the naked eye.
 
 A comparison using a hexeditor shows that various bytes, spread throughout the
 file, had their lower-order bits changed. One such difference is shown below.
