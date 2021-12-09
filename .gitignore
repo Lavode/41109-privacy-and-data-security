@@ -1,9 +1,13 @@
 exercises/**/*.log
 exercises/**/*.pdf
 library/
+slides/
 .Rproj.user
 .RData
 .Rhistory
 r.Rproj
 .ipynb_checkpoints
 exercises/05/data/ex05*
+exercises/06/mondrian
+exercises/11/resources/rfc8017.txt
+exercises/points.ods
