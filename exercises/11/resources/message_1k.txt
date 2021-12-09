@@ -1,0 +1,25 @@
+
+
+
+
+
+
+Internet Engineering Task Force (IETF)                  K. Moriarty, Ed.
+Request for Comments: 8017                               EMC Corporation
+Obsoletes: 3447                                               B. Kaliski
+Category: Informational                                         Verisign
+ISSN: 2070-1721                                               J. Jonsson
+                                                               Subset AB
+                                                                A. Rusch
+                                                                     RSA
+                                                           November 2016
+
+
+          PKCS #1: RSA Cryptography Specifications Version 2.2
+
+Abstract
+
+   This document provides recommendations for the implementation of
+   public-key cryptography based on the RSA algorithm, covering
+   cryptographic primitives, encryption schemes, signature schemes with
+   appendix, and ASN.1 syntax for representing keys and f
