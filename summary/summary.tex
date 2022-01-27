@@ -1,0 +1,220 @@
+\documentclass[a4paper]{scrreprt}
+
+% Uncomment to optimize for double-sided printing.
+% \KOMAoptions{twoside}
+
+% Set binding correction manually, if known.
+% \KOMAoptions{BCOR=2cm}
+
+% Localization options
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+% Sub figures
+\usepackage{subcaption}
+
+% Quotations
+\usepackage{dirtytalk}
+
+% Floats
+\usepackage{float}
+
+% Enhanced verbatim sections. We're mainly interested in
+% \verbatiminput though.
+\usepackage{verbatim}
+
+% Automatically remove leading whitespace in lstlisting
+\usepackage{lstautogobble}
+
+% CSV to tables
+\usepackage{csvsimple}
+
+% PDF-compatible landscape mode.
+% Makes PDF viewers show the page rotated by 90°.
+\usepackage{pdflscape}
+
+% Advanced tables
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{longtable}
+
+% Fancy tablerules
+\usepackage{booktabs}
+
+% Graphics
+\usepackage{graphicx}
+
+% Current time
+\usepackage[useregional=numeric]{datetime2}
+
+% Float barriers.
+% Automatically add a FloatBarrier to each \section
+\usepackage[section]{placeins}
+
+% Custom header and footer
+\usepackage{fancyhdr}
+
+\usepackage{geometry}
+\usepackage{layout}
+
+% Math tools
+\usepackage{mathtools}
+% Math symbols
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{amsthm}
+% General symbols
+\usepackage{stmaryrd}
+
+% Utilities for quotations
+\usepackage{csquotes}
+
+% Bibliography
+\usepackage[
+  style=alphabetic,
+  backend=biber, % Default backend, just listed for completness
+  sorting=ynt % Sort by year, name, title
+]{biblatex}
+\addbibresource{references.bib}
+
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+% Bullet point
+\newcommand{\tabitem}{~~\llap{\textbullet}~~}
+
+\pagestyle{plain}
+% \fancyhf{}
+% \lhead{}
+% \lfoot{}
+% \rfoot{}
+% 
+% Source code & highlighting
+\usepackage{listings}
+
+% SI units
+\usepackage[binary-units=true]{siunitx}
+\DeclareSIUnit\cycles{cycles}
+
+% Should use this command wherever the print date is mentioned.
+\newcommand{\printdate}{\today}
+
+\newcommand{\mailsubject}{Privacy and Data Security - Summary}
+\newcommand{\maillink}[1]{\href{mailto:#1?subject=\mailsubject}
+                               {#1}}
+
+\subject{Privacy and Data Security}
+\title{Summary}
+
+\author{Michael Senn \maillink{michael.senn@students.unibe.ch} --- 16-126-880}
+
+\date{\printdate}
+
+% Needs to be the last command in the preamble, for one reason or
+% another. 
+\usepackage{hyperref}
+
+\begin{document}
+\maketitle
+
+\chapter{Computer security}
+
+\begin{itemize}
+		\item Quine: Program printing its own source code
+		\item Reflections on trusting trust: Compiler inserting backdoors into
+				compilers and target program.
+		\item Real-world security usually with layers
+\end{itemize}
+
+\section{Access control}
+
+\begin{description}
+		\item[Subject] Requests access to resource
+		\item[Resource] Entity being accessed by subject
+		\item[Policy] Specifies how subject may access request
+				\begin{description}
+						\item[Column-based] Each resource specifies what
+								subjects allowed to access. Compare ACL, Linux
+								file system.
+						\item[Row-based] Each subject knows which resources it
+								is allowed to access. Protection required as
+								subjects untrusted. E.g. keycards with
+								public-key crypto.
+						\item[Full matrix] Mapping of subject to resource. E.g.
+								sudoers file.
+				\end{description}
+		\item[Reference monitor] Evaluates whether request by subject to
+				resource is conformant with policy
+\end{description}
+
+\chapter{Tracking}
+
+\begin{description}
+		\item[Worth of data] Pure data companies: One person's data's worth
+				about 10-15 USD per year
+		\item[First vs third party cookies] Set by visiting site, vs set by external content loaded by that site
+		\item[Evercookie] Collection of various storage mechanics to store
+				persistent identifier. Flash, HTML5 local storage, etags, ...
+		\item[Server-sided cookie synchronization] Site A sets cookie and loads
+				third-party resource rom site B, including site-A-ID in that
+				request. Site B can then set cookie and knows relation to site
+				A.
+		\item[Passive tracking] E.g. browser fingerprinting: Fonts, canvas rendering, devices, ...
+\end{description}
+
+\chapter{Anonymization}
+
+\begin{itemize}
+		\item Eliminate personal data while keeping utility high
+		\item Challenge: Correlation of anonymized with external data
+\end{itemize}
+
+\subsection{K-anonymity}
+
+Given data set $A$, partition its attributes into classes:
+\begin{itemize}
+		\item $S$ sensitive attributes, those an adversary wants to learn (e.g. health status)
+		\item $I$ identifiers, which identify individual (e.g. SSN). Removed before dataset published.
+		\item $QI$ quasi-identifiers, which can help to identify individual (e.g. birth date)
+\end{itemize}
+
+A dataset is $k$-anonymous if each partition of the dataset, grouped by its QI,
+has at least $k$ members. $k$ elements must \emph{not} be distinct.
+
+\begin{description}
+		\item[Supression] Remove infrequent values of QI fields
+		\item[Generalization] Replace QI values with more generic ones. Numerical ranges, categorical hierarchies, ...
+\end{description}
+
+Problems:
+\begin{description}
+		\item[Background knowledge] E.g. knowing non-QI data about target person can allow correlation
+		\item[Homogenity attack] If all members of partition have equal sensitive attributes, can still learn them
+\end{description}
+
+\subsection{L-diversity}
+
+Equivalence class is l-diverse if it contains at least $l$ well-represented
+values of sensitive attributes. Dataset is $l$-diverse if all its equivalence
+classes are $l$-diverse.
+
+``Well-represented'':
+\begin{description}
+		\item[Distinct $l$-diversity] Sensitive attributes take on at least $l$ distinct values
+		\item[Probabilistic $l$-diversity] Proportion of each attribute at most $\frac{1}{l}$.
+\end{description}
+
+Probabilistic implies distinct, stronger assumption.
+
+Problems:
+\begin{description}
+		\item[Homogenity] attack still possible
+		\item[Skewed data set] If sensitive data has one unlikely attribute
+				(e.g. HIV+), and equivalence class has significantly higher
+				ratio of it, then an individual being part of equivalence class
+				implies information. (A posterior != a priori)
+\end{description}
+
+\printbibliography
+
+\end{document}

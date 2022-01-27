@@ -1,5 +1,7 @@
 exercises/**/*.log
 exercises/**/*.pdf
+summary/*.log
+summary/*.pdf
 library/
 slides/
 .Rproj.user
