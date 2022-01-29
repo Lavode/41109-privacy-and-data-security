@@ -215,6 +215,53 @@ Problems:
 				implies information. (A posterior != a priori)
 \end{description}
 
+\chapter{Epsilon closeness}
+
+Given a dataset $A$ with sensitive attributes $S = \{s\}$. Let $P_Q$ be
+empirical distribution of $S$ in dataset, that is:
+
+\[
+		P_Q(s) = \frac{\abs{\{c \in A : S = s\}}}{\abs{C}}
+\]
+
+And $P_L$ distribution of $S$ over an equivalence class $L$.
+
+Then $L$ is $\epsilon$-close to the whole dataset if:
+\[
+		D(P_L, P_Q) \leq \epsilon
+\]
+
+For a distance function $D$.
+
+The whole dataset is $\epsilon$-close if all of its equivalence classes are
+$\epsilon$-close.
+
+\subsection{$n-\epsilon$-close}
+
+An equivalence class is $n-\epsilon$-close to the full dataset if there exists
+a subset $M$ of the dataset, with $\abs{M} \geq n$, and $D(P_L, P_{Q | M}) \leq
+\epsilon$.
+
+A partition $C$ is $n-\epsilon$-close to th full dataset if there exists a
+subset $M$, $\abs{M} \geq n$, such that \emph{each} equivalence class $L$
+satisfies the above.
+
+\chapter{Differential privacy}
+
+Given $n$ values $x_1, x_2, \ldots, x_n$ corresponding to secret values of $n$
+individuals, where $X = \{0, 1\}$ or $X \subset \mathbb{N}$.
+
+A randomized algorithm $M : X^n \rightarrow Y$ sanitizes a vector $x^n \in X^n$
+and outputs $y \in Y$.
+
+Two datasets $x^n, x'^n$ are neighbouring if they differ in exactly one
+element. Notation: $x^n \sim x'^n$.
+
+$M$ has \textbf{differential privacy} if, for all $Y' \subset Y$, for all $x^n \sim x'^n$:
+\[
+		P(M(x^n) \in Y') \leq e^\epsilon \cdot P(M(x'^n) \in Y')
+\]
+
 \printbibliography
 
 \end{document}
