@@ -737,6 +737,229 @@ To decode, the ciphertext is thus reconstructed, and decrypted.
 Can also be done with public-key cryptosystem. Adversary can be modelled as
 passive (CPA) or active (CCA).
 
+\chapter{Anonymous communication}
+
+Goal: Anonymity. Hide in crowd.
+
+\section{Terminology}
+
+\begin{description}
+		\item[Sender nodes] Send out traffic
+		\item[Communication nodes] Relay traffic
+		\item[Receiver nodes] Receive traffic
+		\item[Global observer] Read access to all messages on network
+		\item[Anonymity] Node (sender or receiver) is one of many nodes in an
+				anonymity set.
+		\item[Sender, receiver anonymity] Against receiver/sender, some nodes,
+				global observer
+		\item[Unlinkability of sender and receiver] Against smoe nodes, global
+				observer
+\end{description}
+
+Can be defined for datagrams (single messages) or circuits (bi-directional
+connections).
+
+\section{Crowds}
+
+\begin{itemize}
+		\item Early prototype
+		\item Sender nodes also act as communication nodes
+		\item Receivers separate
+		\item Central membership service
+\end{itemize}
+
+To send a message:
+\begin{itemize}
+		\item Send to myself
+\end{itemize}
+
+On receiving a message:
+\begin{itemize}
+		\item Flip biased coin $b$ with probability $p$
+		\item If $b = 1$, select uniform random member $d$ of crowd, send
+				message to $d$, keep track of route to receiver via $d$.
+		\item Else, send message to receiver
+\end{itemize}
+
+Provides:
+\begin{description}
+		\item[Sender anonymity against receiver] Excellent
+		\item[Sender anonymity against some nodes] Partial
+		\item[Sender anonymity against all nodes] None
+		\item[Sender anonymity against global observer] None
+		\item[Receiver anonymity] None
+		\item[Unlikability against some ndoes] Partial
+		\item[Unlikability else] None
+\end{description}
+
+\section{Onion Routing}
+
+\begin{itemize}
+		\item Practicalc onnection-oriented routing protocol
+		\item used in TOR network
+		\item Senders and receivers \emph{outside} the network
+		\item Communication nodes acting as onion routers (OR)
+		\item ORs maintain long-standing encrypted connections with each other
+		\item ORs exchanged fixed-size cells
+		\item Membership service
+		\item Senders connect via onion proxy (edge node)
+\end{itemize}
+
+\subsection{Onion route}
+
+\begin{itemize}
+		\item Short-lived connection through network
+		\item Sender (OP) picsk random route of $l$ hops $OR_i$ through network
+		\item OP establishes session keys $k_i$ with nodes
+		\item Sender encrypts message as $C = Enc_{k_1}(Enc_{k_2}(\ldots(m,
+				Dest), \ldots), OR_3), OR_2)$
+		\item Sends to $OR_1$
+		\item Every OR receives message, decrypts one layer, forwards to next in chain
+\end{itemize}
+
+\subsection{Security}
+
+\begin{itemize}
+		\item Each OR sees encrypted traffic from $OR_{i-1}$ to $OR_{i+1}$
+		\item Exit node sees receiver and content
+\end{itemize}
+
+\begin{description}
+		\item[Sender anonymity against receiver] Excellent
+		\item[Sender anonymity against $n-1$ nodes] Excellent
+		\item[Sender anonymity against all nodes / GO] None
+		\item[Receiver anonymity against sender] None
+		\item[Receiver anonymity against $n-1$ nodes] Excellent
+		\item[Receiver anonymity against all nodes / GO] None
+		\item[Unlinkability against $n-1$ nodes] Excellent
+		\item[Unlinkability against all nodes / GO] none
+\end{description}
+
+Also:
+\begin{itemize}
+		\item Metadata (timing, traffic shape, ...) leaks!
+		\item DNS lookups can leak information
+		\item Exit nodes see traffic, so E2E encryption needed
+\end{itemize}
+
+\section{Mix networks}
+
+\begin{itemize}
+		\item Ideal, theoretical design
+		\item Used inside larger designs
+		\item Many senders, many receivers. Receivers with public keys.
+		\item $n$ communication nodes (`mixers') in sequence
+		\item Only for datagrams
+		\item Senders send to mixers
+		\item Mixers aggregate, shuffle and forward
+		\item Last mixer publishes to public board
+		\item Receivers fetch from public board
+\end{itemize}
+
+\subsection{Protocol}
+
+\begin{itemize}
+		\item Sender $S$ encrypts $m$ to receiver $R$ using onion encryption
+		\item Sends $c$ to $mix_1$
+		\item Mixer $mix_i$ receives list of messages $c$ from $mix_{i-1}$, decrypts one layer
+		\item Permutates list of messages and forwards to $mix_{i+1}$
+		\item Last mixer decrypts messages and posts to public baord
+		\item Receivers periodically read all messages from public board, decrypt their own
+\end{itemize}
+
+Variations: Randomized delays, dummy traffic
+
+\subsection{Security}
+
+\begin{description}
+		\item[Sender anonymity against receiver, $n-1$ nodes, GO] Excellent
+		\item[Against all nodes] None
+		\item[Receiver anonymity against sender, $n-1$ nodes, GO] Excellent
+		\item[Receiver anonymity against all nodes] None
+		\item[Unlinkability] Excellent
+\end{description}
+
+\subsection{Problems}
+
+\begin{itemize}
+		\item Limited capacity
+		\item Only feasible for specialized tasks, e.g. inside voting systems
+		\item No robustness
+\end{itemize}
+
+\section{Dining cryptographers}
+
+Cryptographers at dining table, anonymous donor pays bill. Determine whether it
+was one of them, or an external party.
+
+Parties $P = \{P_1, \ldots, P_n\}$. Each one inputs $x_i$ ($1$ if paid the
+bill, $0$ else). Goal: Compute $s = \oplus x_i$.
+
+\begin{itemize}
+		\item Arrange $P_i$ in a circle
+		\item Each $P_i$ flips coin $K_i$ and shows it to $P_{i+1} \mod n$
+		\item $P_i$ publically announces $y_i = K_i \oplus K_{i+1} \oplus x_i$
+		\item Everyone computes $s = \oplus y_i$
+\end{itemize}
+
+Completness: $s = \oplus y_i = \oplus (K_i \oplus K_{i+1} \oplus x_i)$. Every
+$K_m$ shows up for $i=m$ and $i=m-1$, so they cancel out.
+
+\subsection{Security}
+
+\begin{description}
+		\item[Sender anonymity against receiver, $n-2$ nodes, global obs] Excellent
+		\item[Sender anonymity against all nodes] None
+		\item[Receiver anonymity against sender, $n-2$ nodes, global obs] Excellent
+		\item[Receiver anonymity against all nodes] None
+		\item[Unlinkability] Excellent
+\end{description}
+
+\begin{itemize}
+		\item Limited capacity
+		\item Only one broadcast opportunity, so only one communication
+				possible per execution
+		\item No robustness
+\end{itemize}
+
+\section{Freenet}
+
+Goal: Robust data-storage. Read/write, CRUD (without delete).
+
+\subsection{Content-addressable storage}
+
+\begin{itemize}
+		\item Content-hash-key (CHK) of a file is hash of content, serves as
+				unique identifier
+		\item File content encrypted using $K_{file}$
+		\item Reference to file (for retrieval) is $(CHK_{file}, K_{file})$
+\end{itemize}
+
+\subsection{Naming and namespaces}
+
+\begin{itemize}
+		\item Keyword-signed key (KSK) for a file, derived deterministically
+				from a `name' or `keywords'
+		\item Anyone can insert a file at `name'
+		\item Anyone can retrieve files from `name'
+		\item Signed-subspace key SSK, implements namespace under user's key
+		\item SSK keypair of user $A$ with public key $pk_A$ defined using $Hash(pk_A || name)$ as seed
+		\item User $A$ can insert file under its namespace
+		\item If user $A$ publishes $pk_A$ and $name$, everyone can retrieve files
+\end{itemize}
+
+\subsection{Storage and retrieval}
+
+\begin{itemize}
+		\item Every node stores files addressed by keys
+		\item Every node keeps routing table
+		\item To access file, we ask repeatedly neighbours in routing table
+		\item If node has file, it sends it back
+		\item If node obtains file from another node, it stores file as well (LRU eviction)
+		\item File data propagated towards node which retrieved it
+		\item File data lost if not accessed
+\end{itemize}
+
 \printbibliography
 
 \end{document}
